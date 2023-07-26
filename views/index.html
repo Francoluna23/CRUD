@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operaciones CRUD</title>
+  <link rel="stylesheet" href="../estilos.css">
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="#" id="mostrarProductosBtn">Ver Productos</a></li>
+      <li><a href="#" id="mostrarBuscarProductosBtn">Buscar Productos</a></li> 
+      <li><a href="#" id="mostrarCrearProductoBtn">Crear Producto</a></li>
+      <li><a href="#" id="actualizarProductoBtn">Actualizar Producto</a></li>
+      <li><a href="#" id="eliminarProductoBtn">Eliminar Producto</a></li>
+    </ul>
+  </nav>
+
+  <section id="resultados" style="display: none;">
+    <h2>Todos los productos:</h2>
+    <div id="resultado"></div>
+  </section>
+
+  <section id="formulario" style="display: none;">
+    <h2>Crear Producto</h2>
+    <form id="crearProductoForm">
+      <input type="text" name="nombre" placeholder="Nombre del producto">
+      <input type="text" name="descripcion" placeholder="Descripción del producto">
+      <input type="number" name="precio" placeholder="Precio del producto">
+      <input type="number" name="stock" placeholder="Stock del producto">
+      <button type="submit">Crear</button>
+    </form>
+    <p>El ID del nuevo producto será: <span id="nuevoProductoID"></span></p>
+  </section>
+
+  <section id="buscarProducto" style="display: none;">
+    <h2>Buscar Productos</h2>
+    <form id="buscarProductoForm">
+      <input type="text" name="nombre" placeholder="Nombre del producto">
+      <button type="submit">Buscar</button>
+    </form>
+    <div id="resultadoBuscar"></div>
+  </section>
+
+  <section id="actualizarProducto" style="display: none;">
+    <h2>Actualizar Producto</h2>
+    <form id="buscarProductoActualizarForm">
+      <input type="number" name="id" placeholder="ID del producto">
+      <button type="submit">Buscar</button>
+    </form>
+    <div id="resultadoActualizar"></div>
+  </section>
+
+  <section id="eliminarProducto" style="display: none;">
+    <h2>Eliminar Producto</h2>
+    <form id="buscarProductoEliminarForm">
+      <input type="number" name="id" placeholder="ID del producto">
+      <button type="submit">Eliminar</button>
+    </form>
+    <div id="resultadoEliminar"></div>
+  </section>
+
+  <script>
+
+    // Definición de la URL base para las peticiones a la API
+    const BASE_URL = 'http://localhost:3000/productos';
+    
+    // Función para ocultar todas las secciones en la página
+    function ocultarSecciones() {
+      
+      const resultadosSection = document.getElementById('resultados');
+      resultadosSection.style.display = 'none';
+    
+      const formularioSection = document.getElementById('formulario');
+      formularioSection.style.display = 'none';
+    
+      const buscarProductoSection = document.getElementById('buscarProducto');
+      buscarProductoSection.style.display = 'none';
+    
+      const actualizarProductoSection = document.getElementById('actualizarProducto');
+      actualizarProductoSection.style.display = 'none';
+    
+      const eliminarProductoSection = document.getElementById('eliminarProducto');
+      eliminarProductoSection.style.display = 'none';
+    }
+    
+    // Función para mostrar todos los productos
+    function mostrarProductos() {
+      // Ocultar todas las secciones antes de mostrar los productos
+      ocultarSecciones();
+    
+      // Realizar una solicitud GET a la API para obtener todos los productos
+      fetch(BASE_URL)
+        .then(response => response.json())
+        .then(data => {
+          // Ordenar los productos por su ID
+          data.sort((a, b) => a.id - b.id);
+    
+          // Obtener el contenedor donde se mostrarán los resultados
+          const resultadoContainer = document.getElementById('resultado');
+    
+          // Crear una tabla para mostrar los productos si hay datos disponibles
+          if (data && data.length > 0) {
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+            const headers = ['ID', 'Nombre', 'Descripción', 'Precio', 'Stock'];
+    
+            
+            const headerRow = document.createElement('tr');
+            headers.forEach(headerText => {
+              const th = document.createElement('th');
+              th.textContent = headerText;
+              headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+    
+            // Crear filas para cada producto y agregarlos a la tabla
+            data.forEach(producto => {
+              const productRow = document.createElement('tr');
+              const { id, nombre, descripcion, precio, stock } = producto;
+              const rowData = [id, nombre, descripcion, precio, stock];
+    
+              rowData.forEach(cellData => {
+                const td = document.createElement('td');
+                td.textContent = cellData;
+                productRow.appendChild(td);
+              });
+              tbody.appendChild(productRow);
+            });
+            table.appendChild(tbody);
+            resultadoContainer.innerHTML = '';
+            resultadoContainer.appendChild(table);
+          } else {
+            resultadoContainer.innerHTML = 'No se encontraron productos.';
+          }
+    
+          // Mostrar la sección de resultados
+          const resultadosSection = document.getElementById('resultados');
+          resultadosSection.style.display = 'block';
+        })
+        .catch(handleError);
+    }
+    
+    // Función para mostrar el formulario de creación de un nuevo producto
+    function mostrarCrearProducto() {
+      
+      ocultarSecciones();
+      const formularioSection = document.getElementById('formulario');
+      formularioSection.style.display = 'block';
+    
+      fetch(BASE_URL)
+        .then(response => response.json())
+        .then(data => {
+          // Obtener el ID del nuevo producto sumando 1 al último ID existente
+          const ultimoID = (data.length > 0 ? data[data.length - 1].id : 0) + 1;
+          const siguienteID = ultimoID + 1;
+    
+          // Mostrar el ID del nuevo producto en el formulario
+          const nuevoProductoID = document.getElementById('nuevoProductoID');
+          nuevoProductoID.textContent = siguienteID;
+        })
+        .catch(handleError);
+    
+      // Agregar un evento de escucha para el envío del formulario de creación de producto
+      const crearProductoForm = document.getElementById('crearProductoForm');
+      crearProductoForm.removeEventListener('submit', handleCrearProductoSubmit);
+      crearProductoForm.addEventListener('submit', handleCrearProductoSubmit);
+    }
+    
+    // Función para manejar el envío del formulario de creación de producto
+    function handleCrearProductoSubmit(event) {
+      event.preventDefault();
+      const nombre = document.querySelector('input[name="nombre"]').value;
+      const descripcion = document.querySelector('input[name="descripcion"]').value;
+      const precio = document.querySelector('input[name="precio"]').value;
+      const stock = document.querySelector('input[name="stock"]').value;
+    
+      const nuevoProductoID = document.getElementById('nuevoProductoID').textContent;
+      
+      const nuevoProducto = {
+        id: parseInt(nuevoProductoID),
+        nombre,
+        descripcion,
+        precio: parseInt(precio),
+        stock: parseInt(stock)
+      };
+    
+      fetch(BASE_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(nuevoProducto)
+      })
+        .then(response => response.json())
+        .then(data => {
+          mostrarProductos();
+          alert('¡Nuevo producto añadido con éxito!');
+        })
+        .catch(handleError);
+    }
+    
+    // Función para mostrar la sección de búsqueda de productos
+    function mostrarBuscarProductos() {
+      
+      ocultarSecciones();
+      const buscarProductoSection = document.getElementById('buscarProducto');
+      buscarProductoSection.style.display = 'block';
+    
+      // Agregar un evento de escucha para el envío del formulario de búsqueda de productos
+      const buscarProductoForm = document.getElementById('buscarProductoForm');
+      buscarProductoForm.removeEventListener('submit', handleBuscarProductoSubmit);
+      buscarProductoForm.addEventListener('submit', handleBuscarProductoSubmit);
+    }
+    
+    // Función para manejar el envío del formulario de búsqueda de productos
+    function handleBuscarProductoSubmit(event) {
+      event.preventDefault();
+    
+      const nombreProducto = document.querySelector('#buscarProductoForm input[name="nombre"]').value;
+    
+      fetch(`${BASE_URL}/nombre/${nombreProducto}`)
+        .then(response => response.json())
+        .then(data => {
+          const resultadoContainer = document.getElementById('resultadoBuscar');
+          if (data && data.length > 0) {
+            resultadoContainer.innerHTML = '';
+            data.forEach(producto => {
+              resultadoContainer.innerHTML += `
+                <div>
+                  <h3>${producto.nombre}</h3>
+                  <p>ID: ${producto.id}</p>
+                  <p>${producto.descripcion}</p>
+                  <p>Precio: ${producto.precio}</p>
+                  <p>Stock: ${producto.stock}</p>
+                </div>
+              `;
+            });
+          } else {
+            resultadoContainer.innerHTML = `No se encontraron productos con el nombre ${nombreProducto}`;
+          }
+        })
+        .catch(handleError);
+    }
+    
+    // Función para buscar un producto por su ID y llamar a una función de éxito con los datos
+    function buscarProducto(idProducto, onSuccess) {
+      fetch(`${BASE_URL}/${idProducto}`)
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Producto no encontrado');
+          }
+        })
+        .then(data => {
+          onSuccess(data);
+        })
+        .catch(handleError);
+    }
+    
+    // Función para actualizar un producto mediante una solicitud PUT a la API
+    function actualizarProducto(id, datosActualizados) {
+      fetch(`${BASE_URL}/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datosActualizados)
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Error al actualizar el producto');
+          }
+        })
+        .then(data => {
+          alert('¡El producto se ha actualizado exitosamente!');
+          mostrarProductos();
+        })
+        .catch(handleError);
+    }
+    
+    // Función para mostrar la sección de actualización de producto
+    function mostrarActualizarProducto() {
+      
+      ocultarSecciones();
+      const actualizarProductoSection = document.getElementById('actualizarProducto');
+      actualizarProductoSection.style.display = 'block';
+    
+      // Agregar un evento de escucha para el envío del formulario de búsqueda de producto a actualizar
+      const buscarProductoActualizarForm = document.getElementById('buscarProductoActualizarForm');
+      buscarProductoActualizarForm.removeEventListener('submit', handleBuscarProductoActualizarSubmit);
+      buscarProductoActualizarForm.addEventListener('submit', handleBuscarProductoActualizarSubmit);
+    }
+    
+    // Función para manejar el envío del formulario de búsqueda de producto a actualizar
+    function handleBuscarProductoActualizarSubmit(event) {
+      event.preventDefault();
+    
+      const idProducto = document.querySelector('#buscarProductoActualizarForm input[name="id"]').value;
+    
+      buscarProducto(idProducto, function(data) {
+        const resultadoContainer = document.getElementById('resultadoActualizar');
+        resultadoContainer.innerHTML = `
+          <h3>Producto encontrado:</h3>
+          <h3>${data.nombre}</h3>
+          <p>ID: ${data.id}</p>
+          <p>${data.descripcion}</p>
+          <form id="actualizarProductoForm">
+            <input type="hidden" name="id" value="${data.id}">
+            <input type="hidden" name="nombre" value="${data.nombre}" placeholder="Nombre del producto" readonly> 
+            <input type="hidden" name="descripcion" value="${data.descripcion}" placeholder="Descripción del producto" readonly>
+            <label for="precio">Precio:</label>
+            <input type="number" name="precio" value="${data.precio}" placeholder="Precio del producto">
+            <label for="stock">Stock:</label>
+            <input type="number" name="stock" value="${data.stock}" placeholder="Stock del producto">
+            <button type="submit">Actualizar</button>
+          </form>
+        `;
+    
+        // Agregar un evento de escucha para el envío del formulario de actualización de producto
+        const actualizarProductoForm = document.getElementById('actualizarProductoForm');
+        actualizarProductoForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+    
+          const id = document.querySelector('#actualizarProductoForm input[name="id"]').value;
+          const precio = document.querySelector('#actualizarProductoForm input[name="precio"]').value;
+          const stock = document.querySelector('#actualizarProductoForm input[name="stock"]').value;
+    
+          const datosActualizados = {
+            precio: parseInt(precio),
+            stock: parseInt(stock)
+          };
+    
+          // Llamar a la función de actualización de producto con los datos actualizados
+          actualizarProducto(id, datosActualizados);
+        });
+      });
+    }
+    
+    // Función para mostrar la sección de eliminación de producto
+    function mostrarEliminarProducto() {
+      
+      ocultarSecciones();
+      const eliminarProductoSection = document.getElementById('eliminarProducto');
+      eliminarProductoSection.style.display = 'block';
+    
+      // Agregar un evento de escucha para el envío del formulario de búsqueda de producto a eliminar
+      const buscarProductoEliminarForm = document.getElementById('buscarProductoEliminarForm');
+      buscarProductoEliminarForm.removeEventListener('submit', handleBuscarProductoEliminarSubmit);
+      buscarProductoEliminarForm.addEventListener('submit', handleBuscarProductoEliminarSubmit);
+    }
+    
+    // Función para manejar el envío del formulario de búsqueda de producto a eliminar
+    function handleBuscarProductoEliminarSubmit(event) {
+      event.preventDefault();
+    
+      const idProducto = document.querySelector('#buscarProductoEliminarForm input[name="id"]').value;
+    
+      fetch(`${BASE_URL}/${idProducto}`, {
+        method: 'DELETE'
+      })
+        .then(response => {
+          if (response.ok) {
+            const resultadoContainer = document.getElementById('resultadoEliminar');
+            resultadoContainer.innerHTML = `¡El producto con ID ${idProducto} se ha eliminado exitosamente!`;
+            alert('¡El producto se ha eliminado exitosamente!');
+            mostrarProductos();
+            resultadoContainer.innerHTML = '';
+          } else {
+            const resultadoContainer = document.getElementById('resultadoEliminar');
+            resultadoContainer.innerHTML = `No se encontró producto con ID ${idProducto}`;
+            alert('Error al eliminar el producto');
+          }
+        })
+        .catch(handleError);
+    }
+    
+    // Función para manejar errores y mostrarlos en la consola
+    function handleError(error) {
+      console.error('Error:', error);
+    }
+    
+    // Agregar un evento de escucha para el evento DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Obtener los botones y agregar eventos de escucha para mostrar diferentes secciones
+      const mostrarProductosBtn = document.getElementById('mostrarProductosBtn');
+      const mostrarBuscarProductosBtn = document.getElementById('mostrarBuscarProductosBtn');
+      const mostrarCrearProductoBtn = document.getElementById('mostrarCrearProductoBtn');
+      const actualizarProductoBtn = document.getElementById('actualizarProductoBtn');
+      const eliminarProductoBtn = document.getElementById('eliminarProductoBtn');
+    
+      mostrarProductosBtn.addEventListener('click', function() {
+        mostrarProductos();
+      });
+    
+      mostrarBuscarProductosBtn.addEventListener('click', function() {
+        mostrarBuscarProductos();
+      });
+    
+      mostrarCrearProductoBtn.addEventListener('click', function() {
+        mostrarCrearProducto();
+      });
+    
+      actualizarProductoBtn.addEventListener('click', function() {
+        mostrarActualizarProducto();
+      });
+    
+      eliminarProductoBtn.addEventListener('click', function() {
+        mostrarEliminarProducto();
+      });
+    });
+    
+    // Mostrar los productos al cargar la página
+    mostrarProductos();
+  </script>
+  
+</body>
+</html>

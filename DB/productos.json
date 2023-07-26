@@ -1,0 +1,171 @@
+[
+    {
+      "id": 1,
+      "nombre": "Mate Personalizado",
+      "descripcion": "Mate con diseños a elección, ideal para los fanáticos.",
+      "precio": 1500,
+      "stock": 10
+    },
+    {
+      "id": 2,
+      "nombre": "Taza Personalizado",
+      "descripcion": "Taza con diseños a elección, perfecta para los amantes de los videojuegos.",
+      "precio": 1200,
+      "stock": 8
+    },
+    {
+      "id": 3,
+      "nombre": "Muñeco Articulado",
+      "descripcion": "Muñeco articulado impreso en 3D, con movimientos flexibles para mayor diversión.",
+      "precio": 2000,
+      "stock": 5
+    },
+    {
+      "id": 4,
+      "nombre": "Alhajero Unicornio",
+      "descripcion": "Alhajero en forma de unicornio, ideal para guardar joyas y accesorios.",
+      "precio": 800,
+      "stock": 15
+    },
+    {
+      "id": 5,
+      "nombre": "Azucarera Dinosaurio",
+      "descripcion": "Azucarera con forma de dinosaurio, perfecta para decorar la mesa.",
+      "precio": 1000,
+      "stock": 12
+    },
+    {
+      "id": 6,
+      "nombre": "Caja de Rompecabezas",
+      "descripcion": "Caja con rompecabezas 3D impreso, desafiante y divertido para todas las edades.",
+      "precio": 1800,
+      "stock": 6
+    },
+    {
+      "id": 7,
+      "nombre": "Lámpara Espacial",
+      "descripcion": "Lámpara con forma de nave espacial, perfecta para la habitación de los niños.",
+      "precio": 4500,
+      "stock": 3
+    },
+    {
+      "id": 8,
+      "nombre": "Robot Educativo",
+      "descripcion": "Robot impreso en 3D que enseña conceptos básicos de programación a los niños.",
+      "precio": 3000,
+      "stock": 2
+    },
+    {
+      "id": 9,
+      "nombre": "Juego de Construcción",
+      "descripcion": "Set de piezas impresas en 3D para construir diferentes estructuras y fomentar la creatividad.",
+      "precio": 2200,
+      "stock": 4
+    },
+    {
+      "id": 10,
+      "nombre": "Pulsera Personalizada",
+      "descripcion": "Pulsera impresa en 3D con el nombre personalizado, un regalo único y especial.",
+      "precio": 600,
+      "stock": 20
+    },
+    {
+      "id": 11,
+      "nombre": "Figura Animal",
+      "descripcion": "Figura de animal impresa en 3D, realista y detallada, ideal para coleccionistas.",
+      "precio": 900,
+      "stock": 10
+    },
+    {
+      "id": 12,
+      "nombre": "Puzzle 3D",
+      "descripcion": "Rompecabezas en 3D para armar una réplica en miniatura de un edificio famoso.",
+      "precio": 1600,
+      "stock": 7
+    },
+    {
+      "id": 13,
+      "nombre": "Juego de Bolos",
+      "descripcion": "Set de bolos impresos en 3D con divertidos diseños para jugar en casa o al aire libre.",
+      "precio": 1400,
+      "stock": 9
+    },
+    {
+      "id": 14,
+      "nombre": "Caja de Tesoro",
+      "descripcion": "Caja con diseño de tesoro impresa en 3D, ideal para guardar pequeños tesoros.",
+      "precio": 1100,
+      "stock": 13
+    },
+    {
+      "id": 15,
+      "nombre": "Juguete de Construcción",
+      "descripcion": "Juguete impreso en 3D para armar y desarmar, fomenta habilidades motoras y creatividad.",
+      "precio": 1300,
+      "stock": 11
+    },
+    {
+      "id": 16,
+      "nombre": "Pulsera de Superhéroe",
+      "descripcion": "Pulsera impresa en 3D con el logo de tu superhéroe favorito, un accesorio genial.",
+      "precio": 700,
+      "stock": 18
+    },
+    {
+      "id": 17,
+      "nombre": "Caja de Juguetes",
+      "descripcion": "Caja para guardar juguetes con diseño temático impreso en 3D, orden y diversión juntos.",
+      "precio": 1900,
+      "stock": 6
+    },
+    {
+      "id": 18,
+      "nombre": "Rompecabezas Animal",
+      "descripcion": "Rompecabezas en 3D de animales, desafío para armar y aprender sobre la fauna.",
+      "precio": 800,
+      "stock": 15
+    },
+    {
+      "id": 19,
+      "nombre": "Kit de Ciencia",
+      "descripcion": "Kit impreso en 3D para realizar experimentos científicos divertidos en casa.",
+      "precio": 2500,
+      "stock": 3
+    },
+    {
+      "id": 20,
+      "nombre": "Cubo Mágico",
+      "descripcion": "Cubo de Rubik impreso en 3D, desafío de destreza y lógica para todas las edades.",
+      "precio": 1200,
+      "stock": 8
+    },
+    {
+      "id": 21,
+      "nombre": "Vehículo Espacial",
+      "descripcion": "Vehículo espacial impreso en 3D con detalles realistas, perfecto para jugar y explorar.",
+      "precio": 1600,
+      "stock": 6
+    },
+    {
+      "id": 22,
+      "nombre": "Máscara de Superhéroe",
+      "descripcion": "Máscara impresa en 3D de tu superhéroe favorito, para convertirte en un verdadero héroe.",
+      "precio": 500,
+      "stock": 25
+    },
+    {
+      "id": 23,
+      "nombre": "Puzzle Educativo",
+      "descripcion": "Puzzle educativo impreso en 3D para aprender letras, números y formas.",
+      "precio": 950,
+      "stock": 11
+    },
+    {
+      "id": 24,
+      "nombre": "Soldaditos",
+      "descripcion": "Clásicos soldaditos de juguete, ideal para armar tu propia aventura.",
+      "precio": 30,
+      "stock": 650
+    }
+]    
+  
